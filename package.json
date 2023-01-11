@@ -1,0 +1,55 @@
+{
+  "name": "@faircrypto/magic-numbers",
+  "version": "0.1.0",
+  "description": "Magic Numbers (primes, fibs, etc.)",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "author": "J.Levin, L.Belyaev",
+  "license": "MIT",
+  "keywords": [
+    "Fair Crypto Foundation",
+    "Ethereum",
+    "Solidity",
+    "Math",
+    "Prime Numbaes",
+    "Fibonacci Numbers"
+  ],
+  "scripts": {
+    "compile": "truffle compile -all",
+    "test": "truffle test",
+    "lint": "npm run lint:sol",
+    "lint:fix": "npm run lint:sol:fix",
+    "lint:sol": "solhint 'contracts/**/*.sol' && prettier -c 'contracts/**/*.sol'",
+    "lint:sol:fix": "solhint --fix 'contracts/**/*.sol' && prettier --write \"contracts/**/*.sol\"",
+    "husky:install": "husky install",
+    "npm-publish": "truffle compile && npm publish"
+  },
+  "files": [
+    "/build/contracts/*.json",
+    "/contracts/**/*.sol"
+  ],
+  "lint-staged": {
+    "contracts/*.sol": [
+      "solhint --fix",
+      "prettier --write"
+    ],
+    "**/*.(md|json)": "prettier --write"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@ethersproject/providers": "^5.7.2",
+    "@ethersproject/wallet": "^5.7.0",
+    "@truffle/hdwallet-provider": "^2.0.15",
+    "dotenv": "^16.0.3",
+    "ethers": "^5.7.2",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
+    "prettier-plugin-solidity": "^1.0.0-beta.24",
+    "solhint": "^3.3.7",
+    "truffle-assertions": "^0.9.2",
+    "truffle-plugin-verify": "^0.5.28"
+  }}
