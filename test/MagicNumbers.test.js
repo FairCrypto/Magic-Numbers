@@ -51,7 +51,7 @@ contract("Magic Numbers Library", async () => {
     const provider = new Web3Provider(web3.currentProvider);
 
     const estGasPrime = (n) => numbersEthers.estimateGas.isPrime(n, {gasLimit: 30_000_000}).then(_ => _.toNumber())
-    const estGasFib2 = (n) => numbersEthers.estimateGas.isFib2(n, {gasLimit: 30_000_000}).then(_ => _.toNumber())
+    const estGasFib = (n) => numbersEthers.estimateGas.isFib(n, {gasLimit: 30_000_000}).then(_ => _.toNumber())
 
     before(async () => {
         try {
@@ -127,7 +127,7 @@ contract("Magic Numbers Library", async () => {
     it("Should test first 90 Fibonacci Numbers", async () => {
         for (const f of Array.from(fib(90))) {
             if (extraPrint)
-                console.log(f, await numbers.isFib2(f), await estGasFib2(f) - 21_000,);
+                console.log(f, await numbers.isFib(f), await estGasFib(f) - 21_000,);
         }
     });
 
@@ -160,8 +160,8 @@ contract("Magic Numbers Library", async () => {
             //94611056096305838013295371573764256526437182762229865607320618320601813254535n,
         ];
         for (const f of falseFibs) {
-            assert.ok(!(await numbers.isFib2(f)), 'good Fib? ' + f);
-            if (extraPrint) console.log(f, await estGasFib2(f) - 21_000);
+            assert.ok(!(await numbers.isFib(f)), 'good Fib? ' + f);
+            if (extraPrint) console.log(f, await estGasFib(f) - 21_000);
         }
     })
 
@@ -188,8 +188,8 @@ contract("Magic Numbers Library", async () => {
             //58472848379039952684853851736901133239741266891456844557261755914039063645794n,
         ];
         for (const f of trueFibs) {
-            assert.ok(await numbers.isFib2(f), 'bad Fib? ' + f);
-            if (extraPrint) console.log(f, await estGasFib2(f) - 21_000);
+            assert.ok(await numbers.isFib(f), 'bad Fib? ' + f);
+            if (extraPrint) console.log(f, await estGasFib(f) - 21_000);
         }
     })
 

@@ -75,29 +75,7 @@ library MagicNumbers {
         return ret;
     }
 
-    /*
-    function fastModularExponentiation(uint256 a, uint256 b, uint256 n) internal pure returns (uint256) {
-        a = a % n;
-        uint256 result = 1;
-        uint256 x = a;
-
-        while(b > 0){
-            uint256 leastSignificantBit = b % 2;
-            b = b / 2;
-
-            if (leastSignificantBit == 1) {
-                result = result * x;
-                result = result % n;
-            }
-            x = x * x;
-            x = x % n;
-        }
-        return result;
-    }
-    */
-
     function modExp(uint256 base, uint256 e, uint256 m) internal view returns (uint o) {
-
         assembly {
         // define pointer
             let p := mload(0x40)
@@ -225,30 +203,6 @@ library MagicNumbers {
         return a;
     }
 
-    /*
-    function isFib(uint256 n) public pure returns (bool) {
-        if (n < fibs64()[59] + 1) return isFibs64(n);
-        if (n < fibs128()[38] + 1) return isFibs128(n);
-        for (uint i = 99; i < MAX_FIB_IDX + 1; i++) {
-            uint256 fib = getFib(i);
-            if (fib == n) return true;
-            if (fib > n) return false;
-        }
-        return false;
-    }
-
-    function isFib1(uint256 n) public pure returns (bool) {
-        if (n == 0) return false;
-        if (n == 1) return true;
-        for (uint i = 2; i < MAX_FIB_IDX + 1; i++) {
-            uint256 fib = getFib(i);
-            if (fib == n) return true;
-            if (fib > n) return false;
-        }
-        return false;
-    }
-    */
-
    function isPerfectSquare(uint256 n) internal pure returns (bool) {
        uint256 low = 0;
        uint256 high = n;
@@ -266,7 +220,7 @@ library MagicNumbers {
        return false;
    }
 
-   function isFib2(uint256 n) public pure returns (bool) {
+   function isFib(uint256 n) public pure returns (bool) {
        if (n == 0) return false;
        require(n < 2 ** 62 - 1, 'isFib: number too big');
        uint256 base = n * n * 5;
