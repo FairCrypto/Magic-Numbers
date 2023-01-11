@@ -1,13 +1,33 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
+/*
+
+        \\      //   |||||||||||   |\      ||       A CRYPTOCURRENCY FOR THE MASSES
+         \\    //    ||            |\\     ||
+          \\  //     ||            ||\\    ||       PRINCIPLES OF XEN:
+           \\//      ||            || \\   ||       - No pre-mint; starts with zero supply
+            XX       ||||||||      ||  \\  ||       - No admin keys
+           //\\      ||            ||   \\ ||       - Immutable contract
+          //  \\     ||            ||    \\||
+         //    \\    ||            ||     \\|
+        //      \\   |||||||||||   ||      \|       Copyright (C) FairCrypto Foundation 2022-2023
+
+ */
+
 library MagicNumbers {
+
+    uint256 constant VERSION = 1;
+    string public constant AUTHORS = "@MrJackLevin @lbelyaev faircrypto.org";
 
     // There's 370 fibs that fit in uint256 number
     uint256 constant MAX_FIB_IDX = 370;
-    // max fib is 94611056096305838013295371573764256526437182762229865607320618320601813254535
+    // Max fib number that fits into uint256 size
     uint256 constant MAX_FIB = 94611056096305838013295371573764256526437182762229865607320618320601813254535;
 
+    /**
+        @dev First 60 Fibonacci numbers, which fit into uint64
+    */
     function fibs64() internal pure returns (uint64[60] memory) {
         return [
             uint64(0),            1,                     1,
@@ -33,11 +53,17 @@ library MagicNumbers {
         ];
     }
 
+    /**
+        @dev Tests if number is a fib via a linear lookup in the table above
+    */
     function isFibs64(uint256 n) internal pure returns (bool) {
         for(uint i = 0; i < 60; i++) if (fibs64()[i] == n) return true;
         return false;
     }
 
+    /**
+        @dev Next 38 Fibonacci numbers, which fit into uint128
+    */
     function fibs128() internal pure returns (uint128[39] memory) {
         return [
             uint128(1548008755920),2504730781961,        4052739537881,
@@ -56,11 +82,17 @@ library MagicNumbers {
         ];
     }
 
+    /**
+        @dev Tests if number is a fib via a linear lookup in the table above
+    */
     function isFibs128(uint256 n) internal pure returns (bool) {
         for(uint i = 0; i < 39; i++) if (fibs128()[i] == n) return true;
         return false;
     }
 
+    /**
+        @dev Helper for Miller-Rabin probabilistic primality test
+    */
     // Write (n - 1) as 2^s * d
     function getValues(uint256 n) internal pure returns (uint256[2] memory) {
         uint256 s = 0;
@@ -75,6 +107,9 @@ library MagicNumbers {
         return ret;
     }
 
+    /**
+        @dev Wrapper around EVM precompiled function for modular exponentiation, deployed at 0x05 address
+    */
     function modExp(uint256 base, uint256 e, uint256 m) internal view returns (uint o) {
         assembly {
         // define pointer
@@ -94,8 +129,10 @@ library MagicNumbers {
         }
     }
 
-    // Miller-Rabin test probabilistic primality test
-    // https://en.wikipedia.org/wiki/Miller–Rabin_primality_test
+    /**
+      @dev  Miller-Rabin test probabilistic primality test
+            see https://en.wikipedia.org/wiki/Miller–Rabin_primality_test
+    */
     function probablyPrime(uint256 n, uint256 prime) internal view returns (bool) {
         if (n == 2 || n == 3) {
             return true;
@@ -127,7 +164,11 @@ library MagicNumbers {
         return false;
     }
 
-
+    /**
+      @dev  Determines if a number is prime, using Miller-Rabin test probabilistic primality test
+            plus deterministic checking to sift out pseudo-primes
+            see https://en.wikipedia.org/wiki/Miller–Rabin_primality_test
+    */
     function isPrime(uint256 n) public view returns (bool) {
         if (n < 2_047)
             return probablyPrime(n, 2);
@@ -165,7 +206,9 @@ library MagicNumbers {
         // revert('number too big');
     }
 
-
+    /**
+        @dev Count prime numbers occurring between `from` and `to` numbers
+    */
     function findPrimes(uint256 from, uint256 to) external view returns (uint256 count) {
         require(to > 0, "findPrimes: to should be natural");
         require(to > from, "findPrimes: to should be larger than from");
@@ -175,6 +218,9 @@ library MagicNumbers {
         }
     }
 
+    /**
+        @dev Helper to get N-th Fibonacci number (0 returns 0)
+    */
     function getFib(uint256 n) internal pure returns (uint256 a) {
         if (n == 0) {
             return 0;
@@ -203,7 +249,10 @@ library MagicNumbers {
         return a;
     }
 
-   function isPerfectSquare(uint256 n) internal pure returns (bool) {
+    /**
+        @dev Helper to check if a number is a perfect square
+    */
+    function isPerfectSquare(uint256 n) internal pure returns (bool) {
        uint256 low = 0;
        uint256 high = n;
        while (low <= high) {
@@ -220,6 +269,10 @@ library MagicNumbers {
        return false;
    }
 
+    /**
+        @dev Test if the number is a fib
+        note the upper limit of 2 ** 62 - 1, to avoid overflow while preforming tests
+    */
    function isFib(uint256 n) public pure returns (bool) {
        if (n == 0) return false;
        require(n < 2 ** 62 - 1, 'isFib: number too big');
