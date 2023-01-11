@@ -21,9 +21,13 @@ library MagicNumbers {
     string public constant AUTHORS = "@MrJackLevin @lbelyaev faircrypto.org";
 
     // There's 370 fibs that fit in uint256 number
-    uint256 constant MAX_FIB_IDX = 370;
+    uint256 constant MAX_UINT256_FIB_IDX = 370;
     // Max fib number that fits into uint256 size
-    uint256 constant MAX_FIB = 94611056096305838013295371573764256526437182762229865607320618320601813254535;
+    uint256 constant MAX_UINT256_FIB = 94611056096305838013295371573764256526437182762229865607320618320601813254535;
+    // Max fib index supported by this Library
+    uint256 constant MAX_FIB_IDX = 90;
+    // Max number that could be safely tested by this Library
+    uint256 constant MAX_SUPPORTED_FIB_CANDIDATE = 2 ** 62 - 1;
 
     /**
         @dev First 60 Fibonacci numbers, which fit into uint64
@@ -275,7 +279,7 @@ library MagicNumbers {
     */
    function isFib(uint256 n) public pure returns (bool) {
        if (n == 0) return false;
-       require(n < 2 ** 62 - 1, 'isFib: number too big');
+       require(n < MAX_SUPPORTED_FIB_CANDIDATE, 'isFib: number too big');
        uint256 base = n * n * 5;
        uint256 p1 = base + 4;
        uint256 p2 = base - 4;
