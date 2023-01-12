@@ -33,6 +33,7 @@ library MagicNumbers {
         @dev First 60 Fibonacci numbers, which fit into uint64
     */
     function fibs64() internal pure returns (uint64[60] memory) {
+        // prettier-ignore
         return [
             uint64(0),            1,                     1,
             2,                    3,                     5,
@@ -61,7 +62,7 @@ library MagicNumbers {
         @dev Tests if number is a fib via a linear lookup in the table above
     */
     function isFibs64(uint256 n) internal pure returns (bool) {
-        for(uint i = 0; i < 60; i++) if (fibs64()[i] == n) return true;
+        for (uint i = 0; i < 60; i++) if (fibs64()[i] == n) return true;
         return false;
     }
 
@@ -69,6 +70,7 @@ library MagicNumbers {
         @dev Next 38 Fibonacci numbers, which fit into uint128
     */
     function fibs128() internal pure returns (uint128[39] memory) {
+        // prettier-ignore
         return [
             uint128(1548008755920),2504730781961,        4052739537881,
             6557470319842,        10610209857723,        17167680177565,
@@ -90,7 +92,7 @@ library MagicNumbers {
         @dev Tests if number is a fib via a linear lookup in the table above
     */
     function isFibs128(uint256 n) internal pure returns (bool) {
-        for(uint i = 0; i < 39; i++) if (fibs128()[i] == n) return true;
+        for (uint i = 0; i < 39; i++) if (fibs128()[i] == n) return true;
         return false;
     }
 
@@ -116,19 +118,19 @@ library MagicNumbers {
     */
     function modExp(uint256 base, uint256 e, uint256 m) internal view returns (uint o) {
         assembly {
-        // define pointer
+            // define pointer
             let p := mload(0x40)
-        // store data assembly-favouring ways
-            mstore(p, 0x20)             // Length of Base
-            mstore(add(p, 0x20), 0x20)  // Length of Exponent
-            mstore(add(p, 0x40), 0x20)  // Length of Modulus
-            mstore(add(p, 0x60), base)  // Base
-            mstore(add(p, 0x80), e)     // Exponent
-            mstore(add(p, 0xa0), m)     // Modulus
-        if iszero(staticcall(sub(gas(), 2000), 0x05, p, 0xc0, p, 0x20)) {
-           revert(0, 0)
-        }
-        // data
+            // store data assembly-favouring ways
+            mstore(p, 0x20) // Length of Base
+            mstore(add(p, 0x20), 0x20) // Length of Exponent
+            mstore(add(p, 0x40), 0x20) // Length of Modulus
+            mstore(add(p, 0x60), base) // Base
+            mstore(add(p, 0x80), e) // Exponent
+            mstore(add(p, 0xa0), m) // Modulus
+            if iszero(staticcall(sub(gas(), 2000), 0x05, p, 0xc0, p, 0x20)) {
+                revert(0, 0)
+            }
+            // data
             o := mload(p)
         }
     }
@@ -174,37 +176,39 @@ library MagicNumbers {
             see https://en.wikipedia.org/wiki/Miller–Rabin_primality_test
     */
     function isPrime(uint256 n) public view returns (bool) {
-        if (n < 2_047)
-            return probablyPrime(n, 2);
-        else if (n < 1_373_653)
-            return probablyPrime(n, 2) && probablyPrime(n, 3);
-        else if (n < 9_080_191)
-            return probablyPrime(n, 31) && probablyPrime(n, 73);
-        else if (n < 25_326_001)
-            return probablyPrime(n, 2) && probablyPrime(n, 3)
-            && probablyPrime(n, 5);
+        if (n < 2_047) return probablyPrime(n, 2);
+        else if (n < 1_373_653) return probablyPrime(n, 2) && probablyPrime(n, 3);
+        else if (n < 9_080_191) return probablyPrime(n, 31) && probablyPrime(n, 73);
+        else if (n < 25_326_001) return probablyPrime(n, 2) && probablyPrime(n, 3) && probablyPrime(n, 5);
         else if (n < 3_215_031_751)
-            return probablyPrime(n, 2) && probablyPrime(n, 3)
-            && probablyPrime(n, 5) && probablyPrime(n, 7);
-        else if (n < 4_759_123_141)
-            return probablyPrime(n, 2) && probablyPrime(n, 7)
-            && probablyPrime(n, 61);
+            return probablyPrime(n, 2) && probablyPrime(n, 3) && probablyPrime(n, 5) && probablyPrime(n, 7);
+        else if (n < 4_759_123_141) return probablyPrime(n, 2) && probablyPrime(n, 7) && probablyPrime(n, 61);
         else if (n < 1_122_004_669_633)
-            return probablyPrime(n, 2) && probablyPrime(n, 13)
-            && probablyPrime(n, 23) && probablyPrime(n, 1662803);
+            return probablyPrime(n, 2) && probablyPrime(n, 13) && probablyPrime(n, 23) && probablyPrime(n, 1662803);
         else if (n < 2_152_302_898_747)
-            return probablyPrime(n, 2) && probablyPrime(n, 3)
-            && probablyPrime(n, 5) && probablyPrime(n, 7)
-            && probablyPrime(n, 11);
+            return
+                probablyPrime(n, 2) &&
+                probablyPrime(n, 3) &&
+                probablyPrime(n, 5) &&
+                probablyPrime(n, 7) &&
+                probablyPrime(n, 11);
         else if (n < 3_474_749_660_383)
-            return probablyPrime(n, 2) && probablyPrime(n, 3)
-            && probablyPrime(n, 5) && probablyPrime(n, 7)
-            && probablyPrime(n, 11) && probablyPrime(n, 13);
+            return
+                probablyPrime(n, 2) &&
+                probablyPrime(n, 3) &&
+                probablyPrime(n, 5) &&
+                probablyPrime(n, 7) &&
+                probablyPrime(n, 11) &&
+                probablyPrime(n, 13);
         else if (n < 341_550_071_728_321)
-            return probablyPrime(n, 2) && probablyPrime(n, 3)
-            && probablyPrime(n, 5) && probablyPrime(n, 7)
-            && probablyPrime(n, 11) && probablyPrime(n, 13)
-            && probablyPrime(n, 17);
+            return
+                probablyPrime(n, 2) &&
+                probablyPrime(n, 3) &&
+                probablyPrime(n, 5) &&
+                probablyPrime(n, 7) &&
+                probablyPrime(n, 11) &&
+                probablyPrime(n, 13) &&
+                probablyPrime(n, 17);
         return false;
         // TODO: consider reverting ???
         // revert('number too big');
@@ -217,7 +221,7 @@ library MagicNumbers {
         require(to > 0, "findPrimes: to should be natural");
         require(to > from, "findPrimes: to should be larger than from");
         count = 0;
-        for(uint i = from; i < to; i++) {
+        for (uint i = from; i < to; i++) {
             if (isPrime(i)) count++;
         }
     }
@@ -232,15 +236,15 @@ library MagicNumbers {
         uint256 h = n / 2;
         uint256 mask = 1;
         // find highest set bit in n
-        while(mask <= h) {
+        while (mask <= h) {
             mask <<= 1;
         }
         mask >>= 1;
         a = 1;
         uint256 b = 1;
         uint256 c;
-        while(mask > 0) {
-            c = a * a+b * b;
+        while (mask > 0) {
+            c = a * a + b * b;
             if (n & mask > 0) {
                 b = b * (b + 2 * a);
                 a = c;
@@ -257,32 +261,32 @@ library MagicNumbers {
         @dev Helper to check if a number is a perfect square
     */
     function isPerfectSquare(uint256 n) internal pure returns (bool) {
-       uint256 low = 0;
-       uint256 high = n;
-       while (low <= high) {
-           uint mid = (low + high) / 2;
-           uint square = mid * mid;
-           if (square == n) {
-               return true;
-           } else if (square > n) {
-               high = mid - 1;
-           } else {
-               low = mid + 1;
-           }
-       }
-       return false;
-   }
+        uint256 low = 0;
+        uint256 high = n;
+        while (low <= high) {
+            uint mid = (low + high) / 2;
+            uint square = mid * mid;
+            if (square == n) {
+                return true;
+            } else if (square > n) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return false;
+    }
 
     /**
         @dev Test if the number is a fib
         note the upper limit of 2 ** 62 - 1, to avoid overflow while preforming tests
     */
-   function isFib(uint256 n) public pure returns (bool) {
-       if (n == 0) return false;
-       require(n < MAX_SUPPORTED_FIB_CANDIDATE, 'isFib: number too big');
-       uint256 base = n * n * 5;
-       uint256 p1 = base + 4;
-       uint256 p2 = base - 4;
-       return (isPerfectSquare(p1) || isPerfectSquare(p2));
+    function isFib(uint256 n) public pure returns (bool) {
+        if (n == 0) return false;
+        require(n < MAX_SUPPORTED_FIB_CANDIDATE, "isFib: number too big");
+        uint256 base = n * n * 5;
+        uint256 p1 = base + 4;
+        uint256 p2 = base - 4;
+        return (isPerfectSquare(p1) || isPerfectSquare(p2));
     }
 }
