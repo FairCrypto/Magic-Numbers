@@ -16,18 +16,18 @@ pragma solidity ^0.8.10;
  */
 
 library MagicNumbers {
-
-    uint256 constant VERSION = 1;
+    uint256 public constant VERSION = 1;
     string public constant AUTHORS = "@MrJackLevin @lbelyaev faircrypto.org";
 
     // There's 370 fibs that fit in uint256 number
-    uint256 constant MAX_UINT256_FIB_IDX = 370;
+    uint256 public constant MAX_UINT256_FIB_IDX = 370;
     // Max fib number that fits into uint256 size
-    uint256 constant MAX_UINT256_FIB = 94611056096305838013295371573764256526437182762229865607320618320601813254535;
+    uint256 public constant MAX_UINT256_FIB =
+        94611056096305838013295371573764256526437182762229865607320618320601813254535;
     // Max fib index supported by this Library
-    uint256 constant MAX_FIB_IDX = 90;
+    uint256 public constant MAX_FIB_IDX = 90;
     // Max number that could be safely tested by this Library
-    uint256 constant MAX_SUPPORTED_FIB_CANDIDATE = 2 ** 62 - 1;
+    uint256 public constant MAX_SUPPORTED_FIB_CANDIDATE = 2 ** 62 - 1;
 
     /**
         @dev First 60 Fibonacci numbers, which fit into uint64
